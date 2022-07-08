@@ -11,6 +11,6 @@
 //
 // My recommendation for now would be to use it sparingly and use normal
 // Go iteration with the for keyword where possible and only use itkit
-// iterators where it makes sense to reduce code without sacrificing
-// readability.
+// iterators where it makes sense to reduce code and complexity without
+// sacrificing readability.
 package itkit
