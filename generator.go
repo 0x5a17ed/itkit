@@ -82,10 +82,10 @@ type GIterator[T any] struct {
 	g *G[T]
 }
 
-func (gs *GIterator[T]) Next() bool {
-	if !gs.ChannelIterator.Next() {
-		if gs.g.panic != nil {
-			panic(gs.g.panic)
+func (gi *GIterator[T]) Next() bool {
+	if !gi.ChannelIterator.Next() {
+		if gi.g.panic != nil {
+			panic(gi.g.panic)
 		}
 		return false
 	}
@@ -95,11 +95,11 @@ func (gs *GIterator[T]) Next() bool {
 // Iter returns the underlying iterator of the generator yielding
 // items produced by the generator until the generator function
 // is gone.
-func (gs *GIterator[T]) Iter() Iterator[T] { return gs }
+func (gi *GIterator[T]) Iter() Iterator[T] { return gi }
 
 // Stop stops the Generator. The Generator goroutine will be gone
 // after this function completes.
-func (gs *GIterator[T]) Stop() { gs.g.stop() }
+func (gi *GIterator[T]) Stop() { gi.g.stop() }
 
 // Generator returns the GeneratorFn as a new generator.
 //
