@@ -37,3 +37,8 @@ func main() {
 	})
 }
 ```
+
+
+## 🥇 Acknowledgments
+
+The iterator interface is desgined after the stateful iterators pattern explained in the brilliant blog post from <https://ewencp.org/blog/golang-iterators/index.html>. Most functions to manipulate iterators draw inspiration from different sources such as Python and [github.com/samber/lo](https://github.com/samber/lo).
