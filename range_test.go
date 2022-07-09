@@ -23,7 +23,7 @@ import (
 func TestRange(t *testing.T) {
 	type args struct {
 		stop int
-		opts []OptionFunc
+		opts []OptionFn
 	}
 	tests := []struct {
 		name string
@@ -31,12 +31,12 @@ func TestRange(t *testing.T) {
 		want []int
 	}{
 		{"simple", args{stop: 10}, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
-		{"WithStart", args{stop: 10, opts: []OptionFunc{WithStart(5)}}, []int{5, 6, 7, 8, 9}},
-		{"WithStep", args{stop: 10, opts: []OptionFunc{WithStep(3)}}, []int{0, 3, 6, 9}},
-		{"WithStart,WithStep", args{stop: 10, opts: []OptionFunc{WithStart(1), WithStep(3)}}, []int{1, 4, 7}},
+		{"WithStart", args{stop: 10, opts: []OptionFn{WithStart(5)}}, []int{5, 6, 7, 8, 9}},
+		{"WithStep", args{stop: 10, opts: []OptionFn{WithStep(3)}}, []int{0, 3, 6, 9}},
+		{"WithStart,WithStep", args{stop: 10, opts: []OptionFn{WithStart(1), WithStep(3)}}, []int{1, 4, 7}},
 
 		{"negativeStop", args{stop: -4}, nil},
-		{"negativeStep", args{stop: -5, opts: []OptionFunc{WithStart(5), WithStep(-3)}}, []int{5, 2, -1, -4}},
+		{"negativeStep", args{stop: -5, opts: []OptionFn{WithStart(5), WithStep(-3)}}, []int{5, 2, -1, -4}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

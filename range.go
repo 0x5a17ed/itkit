@@ -35,13 +35,13 @@ func (r RangeIter[T]) Value() T { return r.current }
 
 type RangeOptions struct{ start, step Option[int] }
 
-type OptionFunc func(opts *RangeOptions)
+type OptionFn func(opts *RangeOptions)
 
-func WithStart(v int) OptionFunc { return func(opts *RangeOptions) { opts.start.Set(v) } }
-func WithStep(v int) OptionFunc  { return func(opts *RangeOptions) { opts.step.Set(v) } }
+func WithStart(v int) OptionFn { return func(opts *RangeOptions) { opts.start.Set(v) } }
+func WithStep(v int) OptionFn  { return func(opts *RangeOptions) { opts.step.Set(v) } }
 
 // Range returns an iterator yielding [start, stop)
-func Range[T constraints.Signed](stop T, optFuncs ...OptionFunc) Iterator[T] {
+func Range[T constraints.Signed](stop T, optFuncs ...OptionFn) Iterator[T] {
 	var opts RangeOptions
 	for _, opt := range optFuncs {
 		opt(&opts)

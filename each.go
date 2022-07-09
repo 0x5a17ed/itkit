@@ -14,31 +14,31 @@
 
 package itkit
 
-type ApplyFunc[T any] func(item T)
+type ApplyFn[T any] func(item T)
 
-// Apply walks through the given Iterator it and calls ApplyFunc fn
+// Apply walks through the given Iterator it and calls ApplyFn fn
 // for every single entry.
-func Apply[T any](it Iterator[T], fn ApplyFunc[T]) {
+func Apply[T any](it Iterator[T], fn ApplyFn[T]) {
 	for it.Next() {
 		fn(it.Value())
 	}
 }
 
-type ApplyNFunc[T any] func(i int, item T)
+type ApplyNFn[T any] func(i int, item T)
 
-// ApplyN walks through the given Iterator it and calls ApplyNFunc fn
+// ApplyN walks through the given Iterator it and calls ApplyNFn fn
 // for every single entry together with its index.
-func ApplyN[T any](it Iterator[T], fn ApplyNFunc[T]) {
+func ApplyN[T any](it Iterator[T], fn ApplyNFn[T]) {
 	for i := 0; it.Next(); i += 1 {
 		fn(i, it.Value())
 	}
 }
 
-type EachFunc[T any] func(item T) bool
+type EachFn[T any] func(item T) bool
 
-// Each walks through the given Iterator it and calls EachFunc fn for
-// every single entry, aborting if EachFunc fn returns true.
-func Each[T any](it Iterator[T], fn EachFunc[T]) {
+// Each walks through the given Iterator it and calls EachFn fn for
+// every single entry, aborting if EachFn fn returns true.
+func Each[T any](it Iterator[T], fn EachFn[T]) {
 	for it.Next() {
 		if fn(it.Value()) {
 			break
@@ -46,12 +46,12 @@ func Each[T any](it Iterator[T], fn EachFunc[T]) {
 	}
 }
 
-type EachNFunc[T any] func(i int, item T) bool
+type EachNFn[T any] func(i int, item T) bool
 
-// EachN walks through the given Iterator it and calls EachNFunc fn for
-// every single entry together with its index, aborting if EachFunc fn
-// returns true.
-func EachN[T any](it Iterator[T], fn EachNFunc[T]) {
+// EachN walks through the given Iterator it and calls EachNFn fn for
+// every single entry together with its index, aborting if the given
+// function returns true.
+func EachN[T any](it Iterator[T], fn EachNFn[T]) {
 	for i := 0; it.Next(); i += 1 {
 		if fn(i, it.Value()) {
 			break

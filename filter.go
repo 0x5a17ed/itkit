@@ -14,11 +14,11 @@
 
 package itkit
 
-type FilterFunc[T any] func(element T) bool
+type FilterFn[T any] func(element T) bool
 
 type FilterIter[T any] struct {
 	it   Iterator[T]
-	fn   FilterFunc[T]
+	fn   FilterFn[T]
 	next *T
 }
 
@@ -36,7 +36,7 @@ func (f *FilterIter[T]) Next() bool {
 func (f FilterIter[T]) Value() T { return *f.next }
 
 // Filter returns an Iterator yielding items from the given iterator
-// for which the given FilterFunc function returns true.
-func Filter[T any](it Iterator[T], cb FilterFunc[T]) Iterator[T] {
+// for which the given FilterFn function returns true.
+func Filter[T any](it Iterator[T], cb FilterFn[T]) Iterator[T] {
 	return &FilterIter[T]{it: it, fn: cb}
 }
