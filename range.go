@@ -18,10 +18,16 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+// RangeIter provides an [Iterator] over an immutable sequence of numbers.
 type RangeIter[T constraints.Signed] struct {
 	index, start, step, length, current T
 }
 
+// Next advances the iterator to the first/next item,
+// returning true if successful meaning there is an item
+// available to be fetched with Value and false otherwise.
+//
+// See [Iterator] for more details.
 func (r *RangeIter[T]) Next() bool {
 	if r.index >= r.length {
 		return false
@@ -31,34 +37,37 @@ func (r *RangeIter[T]) Next() bool {
 	return true
 }
 
-func (r RangeIter[T]) Value() T { return r.current }
+func (r *RangeIter[T]) Value() T { return r.current }
 
-type RangeOptions struct{ start, step Option[int] }
-
-type OptionFn func(opts *RangeOptions)
-
-func WithStart(v int) OptionFn { return func(opts *RangeOptions) { opts.start.Set(v) } }
-func WithStep(v int) OptionFn  { return func(opts *RangeOptions) { opts.step.Set(v) } }
-
-// Range returns an iterator yielding [start, stop)
-func Range[T constraints.Signed](stop T, optFuncs ...OptionFn) Iterator[T] {
-	var opts RangeOptions
-	for _, opt := range optFuncs {
-		opt(&opts)
-	}
-
-	startVal, stepVal := T(opts.start.OrElse(0)), T(opts.step.OrElse(1))
+func newRange[T constraints.Signed](start, stop, step T) Iterator[T] {
+	stepArg := step
 
 	var lo, hi T
-	if stepVal > 0 {
-		lo, hi = startVal, stop
+	if step > 0 {
+		lo, hi = start, stop
 	} else {
-		lo, hi, stepVal = stop, startVal, -1*stepVal
+		lo, hi, step = stop, start, -1*step
 	}
 
 	var length T
 	if hi > lo {
-		length = (((hi - lo) - 1) / stepVal) + 1
+		length = (((hi - lo) - 1) / step) + 1
 	}
-	return &RangeIter[T]{start: startVal, step: T(opts.step.OrElse(1)), length: length}
+
+	return &RangeIter[T]{start: start, step: stepArg, length: length}
+}
+
+// Range returns an iterator yielding [0 .. stop)
+func Range[T constraints.Signed](stop T) Iterator[T] {
+	return newRange(0, stop, 1)
+}
+
+// RangeFrom returns an iterator yielding [start .. stop)
+func RangeFrom[T constraints.Signed](start, stop T) Iterator[T] {
+	return newRange(start, stop, 1)
+}
+
+// RangeSteps returns an iterator yielding [start .. start+step*n .. stop)
+func RangeSteps[T constraints.Signed](start, stop, step T) Iterator[T] {
+	return newRange(start, stop, step)
 }

@@ -12,36 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package itkit
+package itkit_test
 
 import (
 	"testing"
 
 	assertpkg "github.com/stretchr/testify/assert"
+
+	"github.com/0x5a17ed/itkit"
 )
 
 func TestRange(t *testing.T) {
 	type args struct {
-		stop int
-		opts []OptionFn
+		fn func() itkit.Iterator[int]
 	}
-	tests := []struct {
+	tt := []struct {
 		name string
 		args args
 		want []int
 	}{
-		{"simple", args{stop: 10}, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
-		{"WithStart", args{stop: 10, opts: []OptionFn{WithStart(5)}}, []int{5, 6, 7, 8, 9}},
-		{"WithStep", args{stop: 10, opts: []OptionFn{WithStep(3)}}, []int{0, 3, 6, 9}},
-		{"WithStart,WithStep", args{stop: 10, opts: []OptionFn{WithStart(1), WithStep(3)}}, []int{1, 4, 7}},
+		{"simple", args{fn: func() itkit.Iterator[int] {
+			return itkit.Range(10)
+		}}, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
 
-		{"negativeStop", args{stop: -4}, nil},
-		{"negativeStep", args{stop: -5, opts: []OptionFn{WithStart(5), WithStep(-3)}}, []int{5, 2, -1, -4}},
+		{"From", args{fn: func() itkit.Iterator[int] {
+			return itkit.RangeFrom(5, 10)
+		}}, []int{5, 6, 7, 8, 9}},
+		{"WithStep", args{fn: func() itkit.Iterator[int] {
+			return itkit.RangeSteps(0, 10, 3)
+		}}, []int{0, 3, 6, 9}},
+
+		{"negativeStop", args{fn: func() itkit.Iterator[int] {
+			return itkit.Range(-4)
+		}}, nil},
+		{"negativeStep", args{fn: func() itkit.Iterator[int] {
+			return itkit.RangeSteps(5, -5, -3)
+		}}, []int{5, 2, -1, -4}},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
 			assert := assertpkg.New(t)
-			assert.Equal(Slice(Range(tt.args.stop, tt.args.opts...)), tt.want)
+			assert.Equal(itkit.Slice(tc.args.fn()), tc.want)
 		})
 	}
 }
