@@ -39,7 +39,7 @@ func TestFind(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			assert := assertpkg.New(t)
 
-			it := itkit.From([]int{1, 2, 3, 4, 5})
+			it := itkit.InSlice([]int{1, 2, 3, 4, 5})
 
 			gotOut, gotOk := itkit.Find(it, compareFn, tc.needle)
 			assert.Equal(tc.wantOk, gotOk)

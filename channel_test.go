@@ -29,6 +29,6 @@ func TestChannel(t *testing.T) {
 	}
 	close(ch)
 
-	s := itkit.Slice(itkit.Channel(ch))
+	s := itkit.ToSlice(itkit.Channel(ch))
 	assertpkg.Equal(t, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, s)
 }

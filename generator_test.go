@@ -28,7 +28,7 @@ import (
 func TestGenerator(t *testing.T) {
 	defer goleak.VerifyNone(t)
 
-	s := itkit.Slice(itkit.Generator(func(g *itkit.G[int]) {
+	s := itkit.ToSlice(itkit.Generator(func(g *itkit.G[int]) {
 		for i := 1; i < 5; i++ {
 			g.Send(i)
 		}

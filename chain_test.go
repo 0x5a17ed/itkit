@@ -35,33 +35,33 @@ func TestChain(t *testing.T) {
 		{"empty", args{[]itkit.Iterator[int]{itkit.Empty[int]()}}, []int(nil)},
 
 		{"one", args{[]itkit.Iterator[int]{
-			itkit.From([]int{1, 2, 3}),
+			itkit.InSlice([]int{1, 2, 3}),
 		}}, []int{1, 2, 3}},
 
 		{"two", args{[]itkit.Iterator[int]{
-			itkit.From([]int{1, 2, 3}),
-			itkit.From([]int{7, 8, 9}),
+			itkit.InSlice([]int{1, 2, 3}),
+			itkit.InSlice([]int{7, 8, 9}),
 		}}, []int{1, 2, 3, 7, 8, 9}},
 
 		{"empty mixed-start", args{[]itkit.Iterator[int]{
 			itkit.Empty[int](),
-			itkit.From([]int{1, 2, 3}),
-			itkit.From([]int{7, 8, 9}),
+			itkit.InSlice([]int{1, 2, 3}),
+			itkit.InSlice([]int{7, 8, 9}),
 		}}, []int{1, 2, 3, 7, 8, 9}},
 		{"empty mixed-middle", args{[]itkit.Iterator[int]{
-			itkit.From([]int{1, 2, 3}),
+			itkit.InSlice([]int{1, 2, 3}),
 			itkit.Empty[int](),
-			itkit.From([]int{7, 8, 9}),
+			itkit.InSlice([]int{7, 8, 9}),
 		}}, []int{1, 2, 3, 7, 8, 9}},
 		{"empty mixed-end", args{[]itkit.Iterator[int]{
-			itkit.From([]int{1, 2, 3}),
-			itkit.From([]int{7, 8, 9}),
+			itkit.InSlice([]int{1, 2, 3}),
+			itkit.InSlice([]int{7, 8, 9}),
 			itkit.Empty[int](),
 		}}, []int{1, 2, 3, 7, 8, 9}},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := itkit.Slice(itkit.ChainV(test.args.iters...))
+			got := itkit.ToSlice(itkit.ChainV(test.args.iters...))
 			assertpkg.Equal(t, test.wanted, got)
 		})
 	}

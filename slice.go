@@ -39,14 +39,13 @@ func (it *SliceIterator[T]) Value() T {
 	return *it.current
 }
 
-// From returns an iterator yielding items from the given slice.
-func From[T any](s []T) Iterator[T] {
+// InSlice returns an [Iterator] yielding items in the given slice.
+func InSlice[T any](s []T) Iterator[T] {
 	return &SliceIterator[T]{Data: s}
 }
 
-// Slice consumes the iterator iterkit.Iterator returning its
-// elements as a Go slice.
-func Slice[T any](it Iterator[T]) (out []T) {
+// ToSlice consumes the [Iterator] returning its elements as a Go slice.
+func ToSlice[T any](it Iterator[T]) (out []T) {
 	for it.Next() {
 		out = append(out, it.Value())
 	}

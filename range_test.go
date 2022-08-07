@@ -35,7 +35,7 @@ func TestRange(t *testing.T) {
 			return itkit.Range(10)
 		}}, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
 
-		{"From", args{fn: func() itkit.Iterator[int] {
+		{"InSlice", args{fn: func() itkit.Iterator[int] {
 			return itkit.RangeFrom(5, 10)
 		}}, []int{5, 6, 7, 8, 9}},
 		{"WithStep", args{fn: func() itkit.Iterator[int] {
@@ -52,7 +52,7 @@ func TestRange(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 			assert := assertpkg.New(t)
-			assert.Equal(itkit.Slice(tc.args.fn()), tc.want)
+			assert.Equal(itkit.ToSlice(tc.args.fn()), tc.want)
 		})
 	}
 }

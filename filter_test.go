@@ -25,7 +25,7 @@ import (
 func TestFilter(t *testing.T) {
 	t.Run("FilterRange", func(t *testing.T) {
 		assert := assertpkg.New(t)
-		s := itkit.Slice(itkit.Filter(itkit.Range(10), func(i int) bool { return i%2 == 0 }))
+		s := itkit.ToSlice(itkit.Filter(itkit.Range(10), func(i int) bool { return i%2 == 0 }))
 		assert.Equal([]int{0, 2, 4, 6, 8}, s)
 	})
 

@@ -37,7 +37,7 @@ func TestKeys_String(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := itkit.Slice(itkit.Keys(tt.given).Iter())
+			got := itkit.ToSlice(itkit.Keys(tt.given).Iter())
 			sort.Strings(got)
 			assertpkg.Equalf(t, tt.wanted, got, "Keys(%v)", tt.given)
 		})

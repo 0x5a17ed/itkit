@@ -67,5 +67,5 @@ func Runes(v string) Iterator[rune] {
 // String consumes the given rune iterator and returns the content as
 // a string.
 func String(it Iterator[rune]) string {
-	return string(Slice(it))
+	return string(ToSlice(it))
 }

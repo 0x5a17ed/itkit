@@ -24,6 +24,6 @@ import (
 
 func TestMap(t *testing.T) {
 	assert := assertpkg.New(t)
-	s := itkit.Slice(itkit.Map(itkit.Runes("Hello World!"), func(r rune) string { return string(r) }))
+	s := itkit.ToSlice(itkit.Map(itkit.Runes("Hello World!"), func(r rune) string { return string(r) }))
 	assert.Equal([]string{"H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d", "!"}, s)
 }

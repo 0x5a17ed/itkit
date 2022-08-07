@@ -25,12 +25,12 @@ import (
 func TestSlice(t *testing.T) {
 	assert := assertpkg.New(t)
 
-	s := itkit.Slice(itkit.Range(10))
+	s := itkit.ToSlice(itkit.Range(10))
 	assert.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, s)
 }
 
 func TestSliceIterator(t *testing.T) {
-	it := itkit.From([]int{1, 2, 3})
+	it := itkit.InSlice([]int{1, 2, 3})
 
 	var values []int
 	for it.Next() {

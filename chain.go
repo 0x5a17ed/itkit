@@ -51,5 +51,5 @@ func ChainI[T any](iters Iterator[Iterator[T]]) Iterator[T] {
 
 // ChainV is the variadic version of ChainI.
 func ChainV[T any](iters ...Iterator[T]) Iterator[T] {
-	return ChainI(From(iters))
+	return ChainI(InSlice(iters))
 }
