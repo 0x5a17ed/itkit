@@ -61,8 +61,8 @@ func (g *G[T]) run(fn GeneratorFn[T]) {
 	fn(g)
 }
 
-// Send is called from the Generator and sends the given Value to the
-// Iterator caller.
+// Send is called from a running [GeneratorFn] and sends the given Value to the
+// [Iterator] caller.
 //
 // It panics when the Generator has to stop.
 func (g *G[T]) Send(v T) {
@@ -77,11 +77,14 @@ func newG[T any]() *G[T] {
 	return &G[T]{ch: make(chan T)}
 }
 
+// GIterator represents the receiver facing [Iterator] end of a Generator.
 type GIterator[T any] struct {
 	*ChannelIterator[T]
 	g *G[T]
 }
 
+// Next fetches the next Item produced by the Generator and returns true
+// whenever there is a new item available and false otherwise.
 func (gi *GIterator[T]) Next() bool {
 	if !gi.ChannelIterator.Next() {
 		if gi.g.panic != nil {
@@ -92,24 +95,44 @@ func (gi *GIterator[T]) Next() bool {
 	return true
 }
 
-// Iter returns the underlying iterator of the generator yielding
+// Iter returns the underlying [Iterator] of the [GIterator] yielding
 // items produced by the generator until the generator function
 // is gone.
 func (gi *GIterator[T]) Iter() Iterator[T] { return gi }
 
-// Stop stops the Generator. The Generator goroutine will be gone
-// after this function completes.
+// Stop stops the Generator.
+//
+// The Generator Function will be stopped through a panic call that is
+// meant to kill the running generator.
+//
+// The Generator goroutine will be gone after this function completes.
 func (gi *GIterator[T]) Stop() { gi.g.stop() }
 
-// Generator returns the GeneratorFn as a new generator.
+// GeneratorNoGC starts the [GeneratorFn] function as a new [GIterator].
+//
+// Please consider using [Generator] for simplicity reasons unless
+// the Garbage Collector is a concern.
+//
+// The Generator will not be stopped automatically and [itkit.GIterator.Stop]
+// must be called on the returned  to stop the generator manually.
+//
+// The Generator API is experimental and probably will change.
+func GeneratorNoGC[T any](fn GeneratorFn[T]) *GIterator[T] {
+	gi := &GIterator[T]{g: newG[T]()}
+	gi.ChannelIterator = Channel(gi.g.ch).(*ChannelIterator[T])
+	go gi.g.run(fn)
+
+	return gi
+}
+
+// Generator starts the [GeneratorFn] function as a new [GIterator].
+//
+// The Generator will be stopped automatically when the returned
+// [GIterator] is garbage collected.
 //
 // The Generator API is experimental and probably will change.
 func Generator[T any](fn GeneratorFn[T]) *GIterator[T] {
-	gs := &GIterator[T]{g: newG[T]()}
-	gs.ChannelIterator = Channel(gs.g.ch).(*ChannelIterator[T])
-	runtime.SetFinalizer(gs, (*GIterator[T]).Stop)
-
-	go gs.g.run(fn)
-
-	return gs
+	gi := GeneratorNoGC(fn)
+	runtime.SetFinalizer(gi, (*GIterator[T]).Stop)
+	return gi
 }
