@@ -109,3 +109,55 @@ func TestEachIndex(t *testing.T) {
 		assert.Equal(20, output)
 	})
 }
+
+func TestReduce(t *testing.T) {
+	var n int
+
+	n = itkit.ReduceWithInitial(5, itkit.InSlice([]int{1, 2, 3, 4, 5}), func(a, b int) int { return a * b })
+	assertpkg.Equal(t, 600, n)
+
+	n = itkit.Reduce(itkit.InSlice([]int{1, 2, 3, 4, 5}), func(a, b int) int { return a*2 + b })
+	assertpkg.Equal(t, 57, n)
+}
+
+func TestSum(t *testing.T) {
+	t.Run("float", func(t *testing.T) {
+		var n float64
+
+		n = itkit.SumWithInitial(1, itkit.InSlice([]float64{1.1, 2.2, 3.3}))
+		assertpkg.LessOrEqual(t, n-7.6, 0.1)
+
+		n = itkit.Sum(itkit.InSlice([]float64{1.1, 2.2, 3.3}))
+		assertpkg.LessOrEqual(t, n-6.6, 0.1)
+	})
+
+	t.Run("int", func(t *testing.T) {
+		var n int
+
+		n = itkit.SumWithInitial(1, itkit.InSlice([]int{-1, -2, -3}))
+		assertpkg.Equal(t, -5, n)
+
+		n = itkit.Sum(itkit.InSlice([]int{-1, -2, -3}))
+		assertpkg.Equal(t, -6, n)
+	})
+
+	t.Run("uint", func(t *testing.T) {
+		var n uint
+
+		n = itkit.SumWithInitial(1, itkit.InSlice([]uint{1, 2, 3}))
+		assertpkg.Equal(t, uint(7), n)
+
+		n = itkit.Sum(itkit.InSlice([]uint{1, 2, 3}))
+		assertpkg.Equal(t, uint(6), n)
+	})
+
+	t.Run("string", func(t *testing.T) {
+		var n string
+
+		n = itkit.SumWithInitial("def", itkit.InSlice([]string{"a", "b", "c"}))
+		assertpkg.Equal(t, "defabc", n)
+
+		n = itkit.Sum(itkit.InSlice([]string{"a", "b", "c"}))
+		assertpkg.Equal(t, "abc", n)
+	})
+}

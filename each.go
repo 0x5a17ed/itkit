@@ -14,6 +14,10 @@
 
 package itkit
 
+import (
+	"golang.org/x/exp/constraints"
+)
+
 type ApplyFn[T any] func(item T)
 
 // Apply walks through the given Iterator it and calls ApplyFn fn
@@ -32,6 +36,22 @@ func ApplyN[T any](it Iterator[T], fn ApplyNFn[T]) {
 	for i := 0; it.Next(); i += 1 {
 		fn(i, it.Value())
 	}
+}
+
+type ApplyToFn[T, R any] func(obj R, item T)
+
+// ApplyTo walks through the given Iterator it and calls ApplyToFn fn
+// for every single entry with the given value in obj of type R,
+// returning the passed value.
+//
+// ApplyTo behaves like ReduceWithInitial with the exception that the
+// result of the callback for the previous iteration not being passed
+// down to the next iteration.
+func ApplyTo[T, R any](it Iterator[T], obj R, fn ApplyToFn[T, R]) R {
+	for it.Next() {
+		fn(obj, it.Value())
+	}
+	return obj
 }
 
 type EachFn[T any] func(item T) bool
@@ -57,4 +77,36 @@ func EachN[T any](it Iterator[T], fn EachNFn[T]) {
 			break
 		}
 	}
+}
+
+type AccumulatorFn[T, R any] func(R, T) R
+
+// ReduceWithInitial reduces the given Iterator to a value which is the
+// accumulated result of running each value through AccumulatorFn,
+// where each successive invocation of AccumulatorFn is supplied
+// the return value of the previous invocation.
+func ReduceWithInitial[T, R any](initial R, it Iterator[T], fn AccumulatorFn[T, R]) (out R) {
+	out = initial
+	Apply(it, func(el T) { out = fn(out, it.Value()) })
+	return
+}
+
+// Reduce reduces the given Iterator to a value which is the
+// accumulated result of running each value through AccumulatorFn,
+// where each successive invocation of AccumulatorFn is supplied
+// the return value of the previous invocation.
+func Reduce[T, R any](it Iterator[T], fn AccumulatorFn[T, R]) (out R) {
+	var zero R
+	return ReduceWithInitial(zero, it, fn)
+}
+
+// SumWithInitial accumulates the Iterator values based on the summation of their values.
+func SumWithInitial[T constraints.Ordered](initial T, it Iterator[T]) T {
+	return ReduceWithInitial[T, T](initial, it, func(a, b T) T { return a + b })
+}
+
+// Sum accumulates the Iterator values based on the summation of their values.
+func Sum[T constraints.Ordered](it Iterator[T]) T {
+	var zero T
+	return SumWithInitial(zero, it)
 }
