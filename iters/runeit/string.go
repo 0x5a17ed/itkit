@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package itlib
+package runeit
 
 import (
 	"unicode/utf8"
@@ -62,13 +62,13 @@ func (s *StringIter) Value() rune {
 	return *s.current
 }
 
-// Runes returns an iterator which yields all runes in the given string.
-func Runes(v string) itkit.Iterator[rune] {
+// InString returns an iterator which yields all runes in the given string.
+func InString(v string) itkit.Iterator[rune] {
 	return (&StringIter{value: v}).init()
 }
 
-// String consumes the given rune iterator and returns the content as
+// ToString consumes the given rune iterator and returns the content as
 // a string.
-func String(it itkit.Iterator[rune]) string {
+func ToString(it itkit.Iterator[rune]) string {
 	return string(sliceit.To(it))
 }

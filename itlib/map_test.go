@@ -19,12 +19,13 @@ import (
 
 	assertpkg "github.com/stretchr/testify/assert"
 
+	"github.com/0x5a17ed/itkit/iters/runeit"
 	"github.com/0x5a17ed/itkit/iters/sliceit"
 	"github.com/0x5a17ed/itkit/itlib"
 )
 
 func TestMap(t *testing.T) {
 	assert := assertpkg.New(t)
-	s := sliceit.To(itlib.Map(itlib.Runes("Hello World!"), func(r rune) string { return string(r) }))
+	s := sliceit.To(itlib.Map(runeit.InString("Hello World!"), func(r rune) string { return string(r) }))
 	assert.Equal([]string{"H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d", "!"}, s)
 }

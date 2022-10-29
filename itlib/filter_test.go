@@ -20,6 +20,7 @@ import (
 	assertpkg "github.com/stretchr/testify/assert"
 
 	"github.com/0x5a17ed/itkit/iters/rangeit"
+	"github.com/0x5a17ed/itkit/iters/runeit"
 	"github.com/0x5a17ed/itkit/iters/sliceit"
 	"github.com/0x5a17ed/itkit/itlib"
 )
@@ -33,7 +34,7 @@ func TestFilter(t *testing.T) {
 
 	t.Run("FilterString", func(t *testing.T) {
 		assert := assertpkg.New(t)
-		s := itlib.String(itlib.Filter(itlib.Runes("Hello Wörld"), func(c rune) bool { return 'a' <= c && c <= 'z' }))
+		s := runeit.ToString(itlib.Filter(runeit.InString("Hello Wörld"), func(c rune) bool { return 'a' <= c && c <= 'z' }))
 		assert.Equal("ellorld", s)
 	})
 }
