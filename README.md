@@ -49,7 +49,8 @@ The iterator interface is desgined after the stateful iterators pattern explaine
 
 
 ## ⚖️ License
-itkit is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).
+itkit is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).  
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F0x5a17ed%2Fitkit.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2F0x5a17ed%2Fitkit?ref=badge_large)
 
 
