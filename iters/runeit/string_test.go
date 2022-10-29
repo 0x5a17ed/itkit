@@ -17,7 +17,7 @@ package runeit_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	assertpkg "github.com/stretchr/testify/assert"
 
 	"github.com/0x5a17ed/itkit/iters/runeit"
 	"github.com/0x5a17ed/itkit/iters/sliceit"
@@ -26,17 +26,17 @@ import (
 func TestString(t *testing.T) {
 	t.Run("unicode", func(t *testing.T) {
 		s := sliceit.To(runeit.InString("日本\x80語"))
-		assert.Equal(t, []rune{0x65E5, 0x672C, 0xFFFD, 0x8A9E}, s)
+		assertpkg.Equal(t, []rune{0x65E5, 0x672C, 0xFFFD, 0x8A9E}, s)
 	})
 
 	t.Run("ascii", func(t *testing.T) {
 		s := sliceit.To(runeit.InString("Hello World"))
-		assert.Equal(t, []rune{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64}, s)
+		assertpkg.Equal(t, []rune{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64}, s)
 	})
 
 	t.Run("late unicode", func(t *testing.T) {
 		s := sliceit.To(runeit.InString("Hello Wörld"))
-		assert.Equal(t, []rune{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0xf6, 0x72, 0x6c, 0x64}, s)
+		assertpkg.Equal(t, []rune{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0xf6, 0x72, 0x6c, 0x64}, s)
 	})
 }
 
@@ -45,5 +45,5 @@ func TestToString(t *testing.T) {
 
 	got := runeit.ToString(it)
 
-	assert.Equal(t, "日本", got)
+	assertpkg.Equal(t, "日本", got)
 }
