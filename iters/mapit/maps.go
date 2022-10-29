@@ -21,22 +21,20 @@ import (
 	"github.com/0x5a17ed/itkit/ittuple"
 )
 
-type Pair[T1, T2 any] interface{ Values() (T1, T2) }
-
 // Ensure T2 conforms to the Pair protocol.
-var _ Pair[struct{}, struct{}] = &ittuple.T2[struct{}, struct{}]{}
+var _ itlib.Pair[struct{}, struct{}] = &ittuple.T2[struct{}, struct{}]{}
 
 // To consumes an [Iterator] returning its Pair elements as a Go map.
-func To[K comparable, V any](it itkit.Iterator[Pair[K, V]]) (out map[K]V) {
-	return itlib.ApplyTo(it, make(map[K]V), func(m map[K]V, p Pair[K, V]) {
+func To[K comparable, V any](it itkit.Iterator[itlib.Pair[K, V]]) (out map[K]V) {
+	return itlib.ApplyTo(it, make(map[K]V), func(m map[K]V, p itlib.Pair[K, V]) {
 		l, r := p.Values()
 		m[l] = r
 	})
 }
 
 // In returns an [GIterator] yielding Pair items in the given map.
-func In[K comparable, V any](m map[K]V) *genit.GIterator[Pair[K, V]] {
-	return genit.Generator(func(g *genit.G[Pair[K, V]]) {
+func In[K comparable, V any](m map[K]V) *genit.GIterator[itlib.Pair[K, V]] {
+	return genit.Generator(func(g *genit.G[itlib.Pair[K, V]]) {
 		for k, v := range m {
 			g.Send(ittuple.T2[K, V]{Left: k, Right: v})
 		}

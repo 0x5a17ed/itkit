@@ -32,21 +32,21 @@ func TestZip(t *testing.T) {
 	tt := []struct {
 		name string
 		args args
-		want []ittuple.T2[string, int]
+		want []itlib.Pair[string, int]
 	}{
 		{"empty", args{}, nil},
 		{"equal", args{
 			left:  []string{"a", "b", "c"},
 			right: []int{17, 19, 23},
-		}, []ittuple.T2[string, int]{{"a", 17}, {"b", 19}, {"c", 23}}},
+		}, []itlib.Pair[string, int]{ittuple.NewT2("a", 17), ittuple.NewT2("b", 19), ittuple.NewT2("c", 23)}},
 		{"left short", args{
 			left:  []string{"a", "b"},
 			right: []int{17, 19, 23},
-		}, []ittuple.T2[string, int]{{"a", 17}, {"b", 19}}},
+		}, []itlib.Pair[string, int]{ittuple.NewT2("a", 17), ittuple.NewT2("b", 19)}},
 		{"right short", args{
 			left:  []string{"a", "b", "c"},
 			right: []int{17, 19},
-		}, []ittuple.T2[string, int]{{"a", 17}, {"b", 19}}},
+		}, []itlib.Pair[string, int]{ittuple.NewT2("a", 17), ittuple.NewT2("b", 19)}},
 	}
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {

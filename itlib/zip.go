@@ -25,8 +25,10 @@ type ZipIterator[T1, T2 any] struct {
 	current ittuple.T2[T1, T2]
 }
 
+type Pair[T1, T2 any] interface{ Values() (T1, T2) }
+
 // Ensure ZipIterator conforms to the Iterator protocol.
-var _ itkit.Iterator[ittuple.T2[struct{}, struct{}]] = &ZipIterator[struct{}, struct{}]{}
+var _ itkit.Iterator[Pair[struct{}, struct{}]] = &ZipIterator[struct{}, struct{}]{}
 
 func (it *ZipIterator[T1, T2]) Next() bool {
 	if !it.Left.Next() || !it.Right.Next() {
@@ -38,7 +40,7 @@ func (it *ZipIterator[T1, T2]) Next() bool {
 	return true
 }
 
-func (it *ZipIterator[T1, T2]) Value() ittuple.T2[T1, T2] {
+func (it *ZipIterator[T1, T2]) Value() Pair[T1, T2] {
 	return it.current
 }
 
@@ -47,6 +49,6 @@ func (it *ZipIterator[T1, T2]) Value() ittuple.T2[T1, T2] {
 // The returned iterator yield T2 values, where the i-th tuple contains
 // the i-th element from each of the argument sequences or iterables.
 // The iterator will stop when the shortest input iterable is exhausted.
-func Zip[T1, T2 any](it1 itkit.Iterator[T1], it2 itkit.Iterator[T2]) itkit.Iterator[ittuple.T2[T1, T2]] {
+func Zip[T1, T2 any](it1 itkit.Iterator[T1], it2 itkit.Iterator[T2]) itkit.Iterator[Pair[T1, T2]] {
 	return &ZipIterator[T1, T2]{Left: it1, Right: it2}
 }

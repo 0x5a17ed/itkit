@@ -23,6 +23,7 @@ import (
 
 	"github.com/0x5a17ed/itkit/iters/mapit"
 	"github.com/0x5a17ed/itkit/iters/sliceit"
+	"github.com/0x5a17ed/itkit/itlib"
 	"github.com/0x5a17ed/itkit/ittuple"
 )
 
@@ -75,13 +76,13 @@ func TestInMap(t *testing.T) {
 		"baz": 17,
 	}).Iter())
 
-	slices.SortFunc(s, func(a, b mapit.Pair[string, int]) bool {
+	slices.SortFunc(s, func(a, b itlib.Pair[string, int]) bool {
 		a1, _ := a.Values()
 		b1, _ := b.Values()
 		return a1 < b1
 	})
 
-	assertpkg.Equal(t, []mapit.Pair[string, int]{
+	assertpkg.Equal(t, []itlib.Pair[string, int]{
 		ittuple.T2[string, int]{"baa", 42},
 		ittuple.T2[string, int]{"baz", 17},
 		ittuple.T2[string, int]{"foo", 23},
@@ -89,7 +90,7 @@ func TestInMap(t *testing.T) {
 }
 
 func TestToMap(t *testing.T) {
-	m := mapit.To(sliceit.In([]mapit.Pair[string, int]{
+	m := mapit.To(sliceit.In([]itlib.Pair[string, int]{
 		ittuple.T2[string, int]{"baa", 42},
 		ittuple.T2[string, int]{"baz", 17},
 		ittuple.T2[string, int]{"foo", 23},
