@@ -14,6 +14,35 @@
 
 package itkit
 
+type Pair[T1, T2 any] interface{ Values() (T1, T2) }
+
+// ToMap consumes an [Iterator] returning its Pair elements as a Go map.
+func ToMap[K comparable, V any](it Iterator[Pair[K, V]]) (out map[K]V) {
+	return ApplyTo(it, make(map[K]V), func(m map[K]V, p Pair[K, V]) {
+		l, r := p.Values()
+		m[l] = r
+	})
+}
+
+// InMap returns an [GIterator] yielding Pair items in the given map.
+func InMap[K comparable, V any](m map[K]V) *GIterator[Pair[K, V]] {
+	return Generator(func(g *G[Pair[K, V]]) {
+		for k, v := range m {
+			g.Send(Tuple2[K, V]{Left: k, Right: v})
+		}
+	})
+}
+
+// Values returns an [GIterator] yielding the values of the given Go map.
+func Values[K comparable, V any](m map[K]V) *GIterator[V] {
+	return Generator(func(g *G[V]) {
+		for _, v := range m {
+			g.Send(v)
+		}
+	})
+}
+
+// Keys returns an [GIterator] yielding the keys of the given Go map.
 func Keys[K comparable, V any](m map[K]V) *GIterator[K] {
 	return Generator(func(g *G[K]) {
 		for k := range m {
