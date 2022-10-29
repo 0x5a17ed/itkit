@@ -2,7 +2,7 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/0x5a17ed/itkit.svg)](https://pkg.go.dev/github.com/0x5a17ed/itkit)
 [![License: APACHE-2.0](https://img.shields.io/badge/license-APACHE--2.0-blue?style=flat-square)](https://www.apache.org/licenses/)
-[![Go Report Card](https://goreportcard.com/badge/github.com/0x5a17ed/itkit)](https://goreportcard.com/report/github.com/0x5a17ed/itkit)
+[![Go Report Card](https://goreportcard.com/badge/github.com/0x5a17ed/itkit?style=flat-square)](https://goreportcard.com/report/github.com/0x5a17ed/itkit)
 [![codecov](https://img.shields.io/codecov/c/gh/0x5a17ed/itkit?style=flat-square)](https://codecov.io/gh/0x5a17ed/itkit)
 
 Short, dead simple and concise generic iterator interface. With a few extras similar to what python has to offer.
