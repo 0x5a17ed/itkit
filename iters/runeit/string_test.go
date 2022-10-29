@@ -39,3 +39,11 @@ func TestString(t *testing.T) {
 		assert.Equal(t, []rune{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0xf6, 0x72, 0x6c, 0x64}, s)
 	})
 }
+
+func TestToString(t *testing.T) {
+	it := sliceit.In([]rune{0x65E5, 0x672C})
+
+	got := runeit.ToString(it)
+
+	assert.Equal(t, "日本", got)
+}
