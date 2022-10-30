@@ -19,13 +19,20 @@ import (
 
 	assertpkg "github.com/stretchr/testify/assert"
 
+	"github.com/0x5a17ed/itkit/iters/rangeit"
 	"github.com/0x5a17ed/itkit/iters/runeit"
 	"github.com/0x5a17ed/itkit/iters/sliceit"
 	"github.com/0x5a17ed/itkit/itlib"
 )
 
 func TestMap(t *testing.T) {
-	assert := assertpkg.New(t)
-	s := sliceit.To(itlib.Map(runeit.InString("Hello World!"), func(r rune) string { return string(r) }))
-	assert.Equal([]string{"H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d", "!"}, s)
+	t.Run("strings", func(t *testing.T) {
+		s := sliceit.To(itlib.Map(runeit.InString("Hello World!"), func(r rune) string { return string(r) }))
+		assertpkg.Equal(t, []string{"H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d", "!"}, s)
+	})
+
+	t.Run("integers", func(t *testing.T) {
+		s := sliceit.To(itlib.Map(rangeit.R(4), func(v int) int { return 1 << v }))
+		assertpkg.Equal(t, []int{1, 2, 4, 8}, s)
+	})
 }
