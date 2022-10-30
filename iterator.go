@@ -14,6 +14,7 @@
 
 package itkit
 
+// An Iterator allows consuming individual items in a stream of items.
 type Iterator[T any] interface {
 	// Next advances the iterator to the first/next item,
 	// returning true if successful meaning there is an item

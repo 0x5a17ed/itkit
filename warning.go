@@ -1,6 +1,8 @@
 // Package itkit provides short, dead simple and concise type-safe
-// generic iterator interface for Go.  With a few extras similar to
+// generic iterator interfaces for Go.  With a few extras similar to
 // what Python has to offer.
+//
+// # Piece of advice
 //
 // Abandon Hope All Ye Who Enter Here.
 //
