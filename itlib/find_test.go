@@ -19,6 +19,7 @@ import (
 
 	assertpkg "github.com/stretchr/testify/assert"
 
+	"github.com/0x5a17ed/itkit"
 	"github.com/0x5a17ed/itkit/iters/sliceit"
 	"github.com/0x5a17ed/itkit/itlib"
 )
@@ -46,4 +47,45 @@ func TestFind(t *testing.T) {
 			assert.Equal(tc.wantOut, gotOut)
 		})
 	}
+}
+
+func TestHead(t *testing.T) {
+	type args struct {
+		it itkit.Iterator[int]
+	}
+	type want struct {
+		out int
+		ok  bool
+	}
+	tt := []struct {
+		name string
+		args args
+		want []want
+	}{
+		{"empty", args{it: itlib.Empty[int]()}, []want{{0, false}}},
+		{"one", args{it: sliceit.In([]int{23})}, []want{{23, true}, {0, false}}},
+		{"multi", args{it: sliceit.In([]int{23, 29})}, []want{{23, true}, {29, true}, {0, false}}},
+	}
+	for _, tc := range tt {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			for i, w := range tc.want {
+				gotOut, gotOk := itlib.Head(tc.args.it)
+				assertpkg.Equalf(t, w.out, gotOut, "%d: Head(%v)", i, tc.args.it)
+				assertpkg.Equalf(t, w.ok, gotOk, "%d: Head(%v)", i, tc.args.it)
+			}
+		})
+	}
+}
+
+func TestHeadOrElse(t *testing.T) {
+	t.Run("empty-default", func(t *testing.T) {
+		got := itlib.HeadOrElse(itlib.Empty[int](), 23)
+		assertpkg.Equal(t, 23, got)
+	})
+
+	t.Run("non-empty-not-default", func(t *testing.T) {
+		got := itlib.HeadOrElse(sliceit.In([]int{17}), 23)
+		assertpkg.Equal(t, 17, got)
+	})
 }

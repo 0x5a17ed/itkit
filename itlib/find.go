@@ -28,3 +28,23 @@ func Find[T any](it itkit.Iterator[T], fn EqualFn[T], needle T) (out T, ok bool)
 	}
 	return
 }
+
+// Head returns the next value in the iterator and true, if the
+// iterator has a next item, consuming it from the iterator as well.
+// Returns the zero value and false otherwise.
+func Head[T any](it itkit.Iterator[T]) (out T, ok bool) {
+	if it.Next() {
+		out, ok = it.Value(), true
+	}
+	return
+}
+
+// HeadOrElse returns the next value in the iterator, if the iterator
+// has a next item, consuming it from the iterator. Returns the
+// provided default value otherwise.
+func HeadOrElse[T any](it itkit.Iterator[T], v T) T {
+	if it.Next() {
+		v = it.Value()
+	}
+	return v
+}
