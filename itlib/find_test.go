@@ -32,7 +32,6 @@ func TestFind(t *testing.T) {
 		wantOut int
 		wantOk  bool
 	}{
-		// TODO: test cases
 		{"ok", 5, 5, true},
 		{"not ok", 6, 0, false},
 	}
