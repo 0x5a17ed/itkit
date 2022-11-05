@@ -21,23 +21,23 @@ import (
 type FilterFn[T any] func(element T) bool
 
 type FilterIter[T any] struct {
-	it   itkit.Iterator[T]
-	fn   FilterFn[T]
-	next *T
+	it  itkit.Iterator[T]
+	fn  FilterFn[T]
+	cur T
 }
 
 func (f *FilterIter[T]) Next() bool {
+	var next T
 	for f.it.Next() {
-		if next := f.it.Value(); f.fn(next) {
-			f.next = &next
+		if next = f.it.Value(); f.fn(next) {
+			f.cur = next
 			return true
 		}
 	}
-	f.next = nil
 	return false
 }
 
-func (f FilterIter[T]) Value() T { return *f.next }
+func (f *FilterIter[T]) Value() T { return f.cur }
 
 // Filter returns an Iterator yielding items from the given iterator
 // for which the given FilterFn function returns true.

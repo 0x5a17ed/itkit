@@ -21,22 +21,19 @@ import (
 type MapFn[T, V any] func(T) V
 
 type MapIterator[T, V any] struct {
-	it   itkit.Iterator[T]
-	fn   MapFn[T, V]
-	next *V
+	it  itkit.Iterator[T]
+	fn  MapFn[T, V]
+	cur V
 }
 
-func (m *MapIterator[T, V]) Next() bool {
-	if m.it.Next() {
-		var v = m.fn(m.it.Value())
-		m.next = &v
-		return true
+func (m *MapIterator[T, V]) Next() (ok bool) {
+	if ok = m.it.Next(); ok {
+		m.cur = m.fn(m.it.Value())
 	}
-	m.next = nil
-	return false
+	return
 }
 
-func (m *MapIterator[T, V]) Value() V { return *m.next }
+func (m *MapIterator[T, V]) Value() V { return m.cur }
 
 // Map returns an iterator that applies MapFn function to every item
 // of iterkit.Iterator iterable, yielding the results.

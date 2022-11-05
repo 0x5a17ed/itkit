@@ -23,13 +23,10 @@ import (
 )
 
 func TestEmpty(t *testing.T) {
-	assert := assertpkg.New(t)
-
 	var it = itlib.Empty[int]()
 
-	assert.False(it.Next())
-
-	assert.PanicsWithValue("empty iterator", func() {
+	assertpkg.False(t, it.Next())
+	assertpkg.NotPanics(t, func() {
 		it.Value()
 	})
 }

@@ -21,13 +21,21 @@ import (
 
 	"github.com/0x5a17ed/itkit/iters/rangeit"
 	"github.com/0x5a17ed/itkit/iters/sliceit"
+	"github.com/0x5a17ed/itkit/itlib"
 )
 
 func TestSlice(t *testing.T) {
-	assert := assertpkg.New(t)
+	t.Run("integers", func(t *testing.T) {
+		s := sliceit.To(rangeit.R(10))
+		assertpkg.Equal(t, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, s)
+	})
 
-	s := sliceit.To(rangeit.R(10))
-	assert.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, s)
+	t.Run("structs-values", func(t *testing.T) {
+		type foo struct{ v int }
+
+		s := sliceit.To(itlib.Map(rangeit.R(5), func(v int) foo { return foo{v: v} }))
+		assertpkg.Equal(t, []foo{{0}, {1}, {2}, {3}, {4}}, s)
+	})
 }
 
 func TestSliceIterator(t *testing.T) {
