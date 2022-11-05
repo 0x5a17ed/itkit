@@ -21,8 +21,8 @@ type Iterator[T any] interface {
 	// available to be fetched with Value and false otherwise.
 	Next() bool
 
-	// Value returns the current item if there is any and panics
-	// otherwise.
+	// Value returns the current item if there is any and may
+	// panic otherwise.
 	//
 	// Note: Use Next to ensure there is an item.
 	Value() T
