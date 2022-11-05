@@ -18,57 +18,46 @@ import (
 	"unicode/utf8"
 
 	"github.com/0x5a17ed/itkit"
-	"github.com/0x5a17ed/itkit/iters/sliceit"
 )
 
-type StringIter struct {
+// StringIterator represents an iterator yielding individual runes
+// from a string.
+type StringIterator struct {
 	value string
 
 	nonASCIIStart int
 
 	bytePos int
-	current *rune
+	current rune
 }
 
-func (s *StringIter) init() *StringIter {
-	for i := 0; i < len(s.value); i++ {
-		if s.value[i] >= utf8.RuneSelf {
-			s.nonASCIIStart = i
-			return s
-		}
-	}
-	s.nonASCIIStart = len(s.value)
-	return s
-}
+func (it *StringIterator) Value() rune { return it.current }
 
-func (s *StringIter) Next() bool {
-	if s.bytePos >= len(s.value) {
-		s.current = nil
+func (it *StringIterator) Next() bool {
+	if it.bytePos >= len(it.value) {
 		return false
 	}
 
 	r, w := rune(0), 0
-	if s.bytePos < s.nonASCIIStart {
-		r, w = rune(s.value[s.bytePos]), 1
+	if it.bytePos < it.nonASCIIStart {
+		r, w = rune(it.value[it.bytePos]), 1
 	} else {
-		r, w = utf8.DecodeRuneInString(s.value[s.bytePos:])
+		r, w = utf8.DecodeRuneInString(it.value[it.bytePos:])
 	}
-	s.current = &r
-	s.bytePos += w
+	it.current = r
+	it.bytePos += w
 	return true
-}
-
-func (s *StringIter) Value() rune {
-	return *s.current
 }
 
 // InString returns an iterator which yields all runes in the given string.
 func InString(v string) itkit.Iterator[rune] {
-	return (&StringIter{value: v}).init()
-}
-
-// ToString consumes the given rune iterator and returns the content as
-// a string.
-func ToString(it itkit.Iterator[rune]) string {
-	return string(sliceit.To(it))
+	it := &StringIterator{value: v}
+	for i := 0; i < len(it.value); i++ {
+		if it.value[i] >= utf8.RuneSelf {
+			it.nonASCIIStart = i
+			return it
+		}
+	}
+	it.nonASCIIStart = len(it.value)
+	return it
 }

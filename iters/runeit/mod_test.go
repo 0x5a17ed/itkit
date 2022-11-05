@@ -17,25 +17,33 @@ package runeit_test
 import (
 	"testing"
 
-	assertpkg "github.com/stretchr/testify/assert"
+	assertPkg "github.com/stretchr/testify/assert"
 
 	"github.com/0x5a17ed/itkit/iters/runeit"
 	"github.com/0x5a17ed/itkit/iters/sliceit"
 )
 
-func TestString(t *testing.T) {
-	t.Run("unicode", func(t *testing.T) {
-		s := sliceit.To(runeit.InString("日本\x80語"))
-		assertpkg.Equal(t, []rune{0x65E5, 0x672C, 0xFFFD, 0x8A9E}, s)
-	})
+func TestToString(t *testing.T) {
+	type args struct {
+		r []rune
+	}
+	tt := []struct {
+		name string
+		args args
+		want string
+	}{
+		{"empty-nil", args{r: nil}, ""},
+		{"empty-slice", args{r: []rune{}}, ""},
 
-	t.Run("ascii", func(t *testing.T) {
-		s := sliceit.To(runeit.InString("Hello World"))
-		assertpkg.Equal(t, []rune{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64}, s)
-	})
-
-	t.Run("late unicode", func(t *testing.T) {
-		s := sliceit.To(runeit.InString("Hello Wörld"))
-		assertpkg.Equal(t, []rune{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0xf6, 0x72, 0x6c, 0x64}, s)
-	})
+		{"ascii", args{r: []rune{0x61, 0x62, 0x63}}, "abc"},
+		{"unicode-1", args{r: []rune{0x65E5, 0x672C}}, "日本"},
+		{"unicode-2", args{r: []rune{0x1fae0}}, "\U0001FAE0"}, // 🫠
+	}
+	for _, tc := range tt {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			got := runeit.ToString(sliceit.In(tc.args.r))
+			assertPkg.Equalf(t, tc.want, got, "ToString(%v)", tc.args.r)
+		})
+	}
 }
