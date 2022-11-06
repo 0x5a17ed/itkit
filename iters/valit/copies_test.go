@@ -12,10 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package valit allows for native Go values to be used with
-// iterators.
-//
-// Iterators:
-//   - Copies - yields copies of a given value forever.
-//   - Fill - yields the same value forever.
-package valit
+package valit_test
+
+import (
+	"testing"
+
+	assertPkg "github.com/stretchr/testify/assert"
+	requirePkg "github.com/stretchr/testify/require"
+
+	"github.com/0x5a17ed/itkit/iters/valit"
+)
+
+type object struct{ copies int }
+
+func (t *object) Copy() *object {
+	t.copies++
+	return &object{}
+}
+
+func TestCopies(t *testing.T) {
+	var o object
+	iter := valit.Copies(&o)
+
+	for i := 0; i < 10; i++ {
+		requirePkg.True(t, iter.Next())
+		assertPkg.NotSame(t, &o, iter.Value())
+		assertPkg.Same(t, iter.Value(), iter.Value())
+	}
+
+	assertPkg.Equal(t, 10, o.copies)
+}
