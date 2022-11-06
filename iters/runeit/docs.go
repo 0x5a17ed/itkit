@@ -12,24 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package chanit
-
-import (
-	"github.com/0x5a17ed/itkit"
-)
-
-// ChannelIterator represents an iterator which yields items retrieved
-// from a Go channel until the channel is closed.
-type ChannelIterator[T any] struct {
-	ch <-chan T
-	v  T
-}
-
-func (it *ChannelIterator[T]) Value() T        { return it.v }
-func (it *ChannelIterator[T]) Next() (ok bool) { it.v, ok = <-it.ch; return }
-
-// In provides an Iterator which yields items retrieved from the
-// given Go channel until the channel is closed.
-func In[T any](ch <-chan T) itkit.Iterator[T] {
-	return &ChannelIterator[T]{ch: ch}
-}
+// Package runeit allows for native Go runes to be used with iterators.
+//
+// Iterator functions:
+//   - [ToString] - convert a rune iterator to a string
+//   - [InString] - provides a rune iterator from a string
+package runeit

@@ -13,5 +13,11 @@
 // limitations under the License.
 
 // Package funcit allows for functional sources of items to be used
-// as streams of data in iterators with the itkit family of functions.
+// with iterators.
+//
+// Iterator functions:
+//   - [IterFn] - calls a [NextFnT] and a [ValueFnT] function to test for more
+//     data and retrieving it
+//   - [PullFn] - calls a single [PullFnT] function to test for more data and
+//     retrieving it
 package funcit
