@@ -34,21 +34,21 @@ func TestRange(t *testing.T) {
 		want []int
 	}{
 		{"simple", args{fn: func() itkit.Iterator[int] {
-			return rangeit.R(10)
+			return rangeit.Range(10)
 		}}, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
 
 		{"In", args{fn: func() itkit.Iterator[int] {
-			return rangeit.From(5, 10)
+			return rangeit.RangeFrom(5, 10)
 		}}, []int{5, 6, 7, 8, 9}},
 		{"WithStep", args{fn: func() itkit.Iterator[int] {
-			return rangeit.Steps(0, 10, 3)
+			return rangeit.RangeStep(0, 10, 3)
 		}}, []int{0, 3, 6, 9}},
 
 		{"negativeStop", args{fn: func() itkit.Iterator[int] {
-			return rangeit.R(-4)
+			return rangeit.Range(-4)
 		}}, nil},
 		{"negativeStep", args{fn: func() itkit.Iterator[int] {
-			return rangeit.Steps(5, -5, -3)
+			return rangeit.RangeStep(5, -5, -3)
 		}}, []int{5, 2, -1, -4}},
 	}
 	for _, tc := range tt {

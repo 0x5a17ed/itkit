@@ -20,17 +20,19 @@ import (
 	"github.com/0x5a17ed/itkit"
 )
 
-// RangeIter provides an [Iterator] over an immutable sequence of numbers.
-type RangeIter[T constraints.Signed] struct {
+// RangeIterator provides an [Iterator] over an immutable sequence of numbers.
+type RangeIterator[T constraints.Signed] struct {
 	index, start, step, length, current T
 }
+
+func (r *RangeIterator[T]) Value() T { return r.current }
 
 // Next advances the iterator to the first/next item,
 // returning true if successful meaning there is an item
 // available to be fetched with Value and false otherwise.
 //
 // See [Iterator] for more details.
-func (r *RangeIter[T]) Next() bool {
+func (r *RangeIterator[T]) Next() bool {
 	if r.index >= r.length {
 		return false
 	}
@@ -38,8 +40,6 @@ func (r *RangeIter[T]) Next() bool {
 	r.index += 1
 	return true
 }
-
-func (r *RangeIter[T]) Value() T { return r.current }
 
 func newRange[T constraints.Signed](start, stop, step T) itkit.Iterator[T] {
 	stepArg := step
@@ -56,20 +56,20 @@ func newRange[T constraints.Signed](start, stop, step T) itkit.Iterator[T] {
 		length = (((hi - lo) - 1) / step) + 1
 	}
 
-	return &RangeIter[T]{start: start, step: stepArg, length: length}
+	return &RangeIterator[T]{start: start, step: stepArg, length: length}
 }
 
-// R returns an iterator yielding [0 .. stop)
-func R[T constraints.Signed](stop T) itkit.Iterator[T] {
+// Range returns an iterator yielding [0 .. stop)
+func Range[T constraints.Signed](stop T) itkit.Iterator[T] {
 	return newRange(0, stop, 1)
 }
 
-// From returns an iterator yielding [start .. stop)
-func From[T constraints.Signed](start, stop T) itkit.Iterator[T] {
+// RangeFrom returns an iterator yielding [start .. stop)
+func RangeFrom[T constraints.Signed](start, stop T) itkit.Iterator[T] {
 	return newRange(start, stop, 1)
 }
 
-// Steps returns an iterator yielding [start .. start+step*n .. stop)
-func Steps[T constraints.Signed](start, stop, step T) itkit.Iterator[T] {
+// RangeStep returns an iterator yielding [start .. start+step*n .. stop)
+func RangeStep[T constraints.Signed](start, stop, step T) itkit.Iterator[T] {
 	return newRange(start, stop, step)
 }

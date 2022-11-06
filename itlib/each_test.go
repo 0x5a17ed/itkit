@@ -28,7 +28,7 @@ func TestApply(t *testing.T) {
 	assert := assertpkg.New(t)
 
 	var loops, output int
-	itlib.Apply(rangeit.R(10), func(item int) {
+	itlib.Apply(rangeit.Range(10), func(item int) {
 		loops += 1
 		output += item
 		return
@@ -42,7 +42,7 @@ func TestApplyN(t *testing.T) {
 	assert := assertpkg.New(t)
 
 	var runs, output int
-	itlib.ApplyN(rangeit.R(10), func(index, item int) {
+	itlib.ApplyN(rangeit.Range(10), func(index, item int) {
 		runs += 1
 		output += index + item
 		return
@@ -56,7 +56,7 @@ func TestApplyTo(t *testing.T) {
 	assert := assertpkg.New(t)
 
 	var s []int
-	itlib.ApplyTo(rangeit.R(10), &s, func(s *[]int, v int) { *s = append(*s, v) })
+	itlib.ApplyTo(rangeit.Range(10), &s, func(s *[]int, v int) { *s = append(*s, v) })
 
 	assert.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, s)
 }
@@ -66,7 +66,7 @@ func TestEach(t *testing.T) {
 		assert := assertpkg.New(t)
 
 		var loops, output int
-		itlib.Each(rangeit.R(10), func(item int) (o bool) {
+		itlib.Each(rangeit.Range(10), func(item int) (o bool) {
 			loops += 1
 			output += item
 			return
@@ -80,7 +80,7 @@ func TestEach(t *testing.T) {
 		assert := assertpkg.New(t)
 
 		var loops, output int
-		itlib.Each(rangeit.R(10), func(item int) (o bool) {
+		itlib.Each(rangeit.Range(10), func(item int) (o bool) {
 			loops += 1
 			output += item
 			return item > 3
@@ -96,7 +96,7 @@ func TestEachIndex(t *testing.T) {
 		assert := assertpkg.New(t)
 
 		var runs, output int
-		itlib.EachN(rangeit.R(10), func(index, item int) (o bool) {
+		itlib.EachN(rangeit.Range(10), func(index, item int) (o bool) {
 			runs += 1
 			output += index + item
 			return
@@ -110,7 +110,7 @@ func TestEachIndex(t *testing.T) {
 		assert := assertpkg.New(t)
 
 		var runs, output int
-		itlib.EachN(rangeit.R(10), func(index, item int) (o bool) {
+		itlib.EachN(rangeit.Range(10), func(index, item int) (o bool) {
 			runs += 1
 			output += index + item
 			return index >= 4

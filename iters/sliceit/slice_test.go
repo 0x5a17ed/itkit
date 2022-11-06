@@ -26,14 +26,14 @@ import (
 
 func TestSlice(t *testing.T) {
 	t.Run("integers", func(t *testing.T) {
-		s := sliceit.To(rangeit.R(10))
+		s := sliceit.To(rangeit.Range(10))
 		assertpkg.Equal(t, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, s)
 	})
 
 	t.Run("structs-values", func(t *testing.T) {
 		type foo struct{ v int }
 
-		s := sliceit.To(itlib.Map(rangeit.R(5), func(v int) foo { return foo{v: v} }))
+		s := sliceit.To(itlib.Map(rangeit.Range(5), func(v int) foo { return foo{v: v} }))
 		assertpkg.Equal(t, []foo{{0}, {1}, {2}, {3}, {4}}, s)
 	})
 }

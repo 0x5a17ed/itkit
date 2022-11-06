@@ -32,7 +32,7 @@ func TestMap(t *testing.T) {
 	})
 
 	t.Run("integers", func(t *testing.T) {
-		s := sliceit.To(itlib.Map(rangeit.R(4), func(v int) int { return 1 << v }))
+		s := sliceit.To(itlib.Map(rangeit.Range(4), func(v int) int { return 1 << v }))
 		assertpkg.Equal(t, []int{1, 2, 4, 8}, s)
 	})
 }
