@@ -26,6 +26,6 @@ type ChannelIterator[T any] struct {
 func (it *ChannelIterator[T]) Value() T        { return it.v }
 func (it *ChannelIterator[T]) Next() (ok bool) { it.v, ok = <-it.ch; return }
 
-func Channel[T any](ch <-chan T) itkit.Iterator[T] {
+func In[T any](ch <-chan T) itkit.Iterator[T] {
 	return &ChannelIterator[T]{ch: ch}
 }

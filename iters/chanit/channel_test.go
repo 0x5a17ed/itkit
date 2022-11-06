@@ -30,6 +30,6 @@ func TestChannel(t *testing.T) {
 	}
 	close(ch)
 
-	s := sliceit.To(chanit.Channel(ch))
+	s := sliceit.To(chanit.In(ch))
 	assertpkg.Equal(t, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, s)
 }

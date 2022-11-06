@@ -121,7 +121,7 @@ func (gi *GIterator[T]) Stop() { gi.g.stop() }
 // The Generator API is experimental and probably will change.
 func GeneratorNoGC[T any](fn GeneratorFn[T]) *GIterator[T] {
 	gi := &GIterator[T]{g: newG[T]()}
-	gi.ChannelIterator = chanit.Channel(gi.g.ch).(*chanit.ChannelIterator[T])
+	gi.ChannelIterator = chanit.In(gi.g.ch).(*chanit.ChannelIterator[T])
 	go gi.g.run(fn)
 
 	return gi
