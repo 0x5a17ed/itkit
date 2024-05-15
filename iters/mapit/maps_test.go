@@ -18,7 +18,7 @@ import (
 	"sort"
 	"testing"
 
-	assertpkg "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 	"golang.org/x/exp/slices"
 
 	"github.com/0x5a17ed/itkit/iters/mapit"
@@ -41,9 +41,12 @@ func TestKeys_String(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := sliceit.To(mapit.Keys(tt.given).Iter())
+			g := mapit.Keys(tt.given)
+			defer g.Stop()
+
+			got := sliceit.To(g.Iter())
 			sort.Strings(got)
-			assertpkg.Equalf(t, tt.wanted, got, "Keys(%v)", tt.given)
+			assert.Equalf(t, tt.wanted, got, "Keys(%v)", tt.given)
 		})
 	}
 }
@@ -62,19 +65,25 @@ func TestMapValues(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := sliceit.To(mapit.Values(tt.given).Iter())
+			g := mapit.Values(tt.given)
+			defer g.Stop()
+
+			got := sliceit.To(g.Iter())
 			sort.Ints(got)
-			assertpkg.Equalf(t, tt.wanted, got, "Values(%v)", tt.given)
+			assert.Equalf(t, tt.wanted, got, "Values(%v)", tt.given)
 		})
 	}
 }
 
 func TestInMap(t *testing.T) {
-	s := sliceit.To(mapit.In(map[string]int{
+	g := mapit.In(map[string]int{
 		"foo": 23,
 		"baa": 42,
 		"baz": 17,
-	}).Iter())
+	})
+	defer g.Stop()
+
+	s := sliceit.To(g.Iter())
 
 	slices.SortFunc(s, func(a, b itlib.Pair[string, int]) bool {
 		a1, _ := a.Values()
@@ -82,7 +91,7 @@ func TestInMap(t *testing.T) {
 		return a1 < b1
 	})
 
-	assertpkg.Equal(t, []itlib.Pair[string, int]{
+	assert.Equal(t, []itlib.Pair[string, int]{
 		ittuple.T2[string, int]{"baa", 42},
 		ittuple.T2[string, int]{"baz", 17},
 		ittuple.T2[string, int]{"foo", 23},
@@ -96,7 +105,7 @@ func TestToMap(t *testing.T) {
 		ittuple.T2[string, int]{"foo", 23},
 	}))
 
-	assertpkg.Equal(t, map[string]int{
+	assert.Equal(t, map[string]int{
 		"foo": 23,
 		"baa": 42,
 		"baz": 17,
