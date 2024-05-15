@@ -16,6 +16,7 @@ package mapit_test
 
 import (
 	"sort"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -85,10 +86,11 @@ func TestInMap(t *testing.T) {
 
 	s := sliceit.To(g.Iter())
 
-	slices.SortFunc(s, func(a, b itlib.Pair[string, int]) bool {
-		a1, _ := a.Values()
-		b1, _ := b.Values()
-		return a1 < b1
+	slices.SortFunc(s, func(a, b itlib.Pair[string, int]) int {
+		al, _ := a.Values()
+		bl, _ := b.Values()
+
+		return strings.Compare(al, bl)
 	})
 
 	assert.Equal(t, []itlib.Pair[string, int]{
