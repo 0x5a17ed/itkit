@@ -5,35 +5,24 @@ jobs:
   test:
     strategy:
       matrix:
-        go-version: [1.18.x, 1.19.x]
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+        go-version: ["1.18.x", "1.19.x"]
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+    runs-on: "${{ matrix.os }}"
     steps:
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@v4
         with:
-          go-version: ${{ matrix.go-version }}
+          show-progress: false
 
-      - uses: actions/checkout@v3
-
-      - uses: actions/cache@v3
+      - uses: actions/setup-go@v5
         with:
-          # In order:
-          # * Module download cache
-          # * Build cache (Linux)
-          # * Build cache (Mac)
-          # * Build cache (Windows)
-          path: |
-            ~/go/pkg/mod
-            ~/.cache/go-build
-            ~/Library/Caches/go-build
-            ~\AppData\Local\go-build
-          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ matrix.go-version }}-
+          go-version: "${{ matrix.go-version }}"
 
-      - run: go test -race -coverprofile=coverage -covermode=atomic ./...
+      - run: >-
+          go test -race -coverprofile=coverage -covermode=atomic ./...
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: "${{ secrets.CODECOV_TOKEN }}"
         with:
           files: coverage
