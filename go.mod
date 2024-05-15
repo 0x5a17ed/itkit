@@ -1,6 +1,6 @@
 module github.com/0x5a17ed/itkit
 
-go 1.18
+go 1.20
 
 require (
 	github.com/0x5a17ed/coro v1.0.0
