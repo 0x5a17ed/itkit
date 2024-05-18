@@ -1,5 +1,7 @@
 github.com/0x5a17ed/coro v1.0.0 h1:e7aCb2d+UEdxECfRgW7O82S85qcfagkKeYRmpbOivP4=
 github.com/0x5a17ed/coro v1.0.0/go.mod h1:63Q/S3kITlZaHEAz43017XiPio29TPqTRWNFY0AiFjo=
+github.com/0x5a17ed/coro v1.1.0 h1:20ZVX8/Wk8UE1QMJz839dkk6dXVXv29ApxOfAwcwl5w=
+github.com/0x5a17ed/coro v1.1.0/go.mod h1:qBhkDOIugmZNQ1JQkrHb9nqy5/Xgd+22fumabDWPp3w=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
