@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package valit_test
+package itlib_test
 
 import (
 	"testing"
 
 	"github.com/0x5a17ed/itkit/iters/runeit"
-	"github.com/0x5a17ed/itkit/iters/valit"
 	"github.com/0x5a17ed/itkit/itlib"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCycle(t *testing.T) {
 	t.Run("empty", func(t *testing.T) {
-		it := valit.Cycle(itlib.Empty[int]())
+		it := itlib.Cycle(itlib.Empty[int]())
 
 		assert.False(t, it.Next())
 	})
@@ -45,7 +44,7 @@ func TestCycle(t *testing.T) {
 
 			inp := []rune(tc.inp)
 
-			it := valit.Cycle[rune](runeit.InString(tc.inp))
+			it := itlib.Cycle[rune](runeit.InString(tc.inp))
 			for i := 0; i < len(inp)*2; i++ {
 				v := itlib.HeadOrElse(it, rune(0))
 				asserter.Equal(v, inp[i%len(tc.inp)])
