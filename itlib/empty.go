@@ -18,13 +18,23 @@ import (
 	"github.com/0x5a17ed/itkit"
 )
 
+// EmptyIterator represents an empty iterator never yielding any items.
 type EmptyIterator[T any] struct{}
 
 // Ensure EmptyIterator implements the iterator interface.
 var _ itkit.Iterator[struct{}] = &EmptyIterator[struct{}]{}
 
-func (e EmptyIterator[T]) Next() bool   { return false }
-func (e EmptyIterator[T]) Value() (v T) { return }
+// Next implements the [itkit.Iterator.Next] interface.
+func (it EmptyIterator[T]) Next() bool {
+	return false
+}
+
+// Value implements the [itkit.Iterator.Value] interface.
+func (it EmptyIterator[T]) Value() (v T) {
+	return
+}
 
 // Empty returns an Iterator that is always exhausted.
-func Empty[T any]() itkit.Iterator[T] { return &EmptyIterator[T]{} }
+func Empty[T any]() itkit.Iterator[T] {
+	return &EmptyIterator[T]{}
+}
