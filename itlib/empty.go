@@ -20,6 +20,9 @@ import (
 
 type EmptyIterator[T any] struct{}
 
+// Ensure EmptyIterator implements the iterator interface.
+var _ itkit.Iterator[struct{}] = &EmptyIterator[struct{}]{}
+
 func (e EmptyIterator[T]) Next() bool   { return false }
 func (e EmptyIterator[T]) Value() (v T) { return }
 
