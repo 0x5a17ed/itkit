@@ -122,3 +122,9 @@ func Drop[T any](n uint, it itkit.Iterator[T]) itkit.Iterator[T] {
 	}
 	return it
 }
+
+// Any tests if any item in the iterator matches a predicate.
+func Any[T any](it itkit.Iterator[T], fn EachFn[T]) (ok bool) {
+	Each(it, func(x T) bool { ok = fn(x); return ok })
+	return
+}

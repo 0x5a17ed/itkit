@@ -204,3 +204,23 @@ func TestDrop(t *testing.T) {
 		assert.Equal(it.Value(), 4)
 	})
 }
+
+func TestAny(t *testing.T) {
+	type testCase[T any] struct {
+		name   string
+		args   []bool
+		wantOk bool
+	}
+	tt := []testCase[bool]{
+		{"false", []bool{false, false, false}, false},
+		{"true", []bool{false, false, true}, true},
+	}
+	for _, tt := range tt {
+		t.Run(tt.name, func(t *testing.T) {
+			got := itlib.Any(sliceit.In(tt.args), func(item bool) bool {
+				return item
+			})
+			assertpkg.Equal(t, tt.wantOk, got)
+		})
+	}
+}
