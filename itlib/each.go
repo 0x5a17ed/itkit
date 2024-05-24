@@ -112,3 +112,13 @@ func Sum[T constraints.Ordered](it itkit.Iterator[T]) T {
 	var zero T
 	return SumWithInitial(zero, it)
 }
+
+// Drop drops n items from the iterator.
+func Drop[T any](n uint, it itkit.Iterator[T]) itkit.Iterator[T] {
+	for i := uint(0); i < n; i++ {
+		if !it.Next() {
+			break
+		}
+	}
+	return it
+}

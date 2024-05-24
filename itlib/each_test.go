@@ -172,3 +172,35 @@ func TestSum(t *testing.T) {
 		assertpkg.Equal(t, "abc", n)
 	})
 }
+
+func TestDrop(t *testing.T) {
+	t.Run("empty", func(t *testing.T) {
+		it := itlib.Empty[any]()
+
+		it2 := itlib.Drop(4, it)
+		assertpkg.Same(t, it, it2)
+	})
+
+	t.Run("exactly", func(t *testing.T) {
+		assert := assertpkg.New(t)
+
+		it := rangeit.Range(5)
+
+		it2 := itlib.Drop(5, it)
+		assert.Same(it, it2)
+
+		assert.False(it.Next())
+	})
+
+	t.Run("less", func(t *testing.T) {
+		assert := assertpkg.New(t)
+
+		it := rangeit.Range(5)
+
+		it2 := itlib.Drop(4, it)
+		assert.Same(it, it2)
+
+		assert.True(it.Next())
+		assert.Equal(it.Value(), 4)
+	})
+}
