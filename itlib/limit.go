@@ -42,7 +42,11 @@ func (it *LimitIterator[T]) Value() (v T) {
 	return it.src.Value()
 }
 
+func newLimitIterator[T any](n uint, src itkit.Iterator[T]) *LimitIterator[T] {
+	return &LimitIterator[T]{n: n, src: src}
+}
+
 // Limit returns a new [LimitIterator] instance.
 func Limit[T any](src itkit.Iterator[T], n uint) itkit.Iterator[T] {
-	return &LimitIterator[T]{src: src, n: n}
+	return newLimitIterator(n, src)
 }
