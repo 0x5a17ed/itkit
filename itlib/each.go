@@ -128,3 +128,9 @@ func Any[T any](it itkit.Iterator[T], fn EachFn[T]) (ok bool) {
 	Each(it, func(x T) bool { ok = fn(x); return ok })
 	return
 }
+
+// All tests if all items in the iterator matches a predicate.
+func All[T any](it itkit.Iterator[T], fn EachFn[T]) (ok bool) {
+	Each(it, func(x T) bool { ok = fn(x); return !ok })
+	return
+}
