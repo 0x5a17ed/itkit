@@ -62,7 +62,7 @@ func (it *PeekIterator[T]) Peek() (v T, ok bool) {
 	return it.cached, it.has
 }
 
-// Iter returns the [TeeIterator] as an [itkit.Iterator] value.
+// Iter returns the [PeekIterator] as an [itkit.Iterator] value.
 func (it *PeekIterator[T]) Iter() itkit.Iterator[T] {
 	return it
 }
