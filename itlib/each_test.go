@@ -190,10 +190,11 @@ func TestDrop(t *testing.T) {
 		{"all", args[int]{5, rangeit.Range(5)}, nil},
 		{"less", args[int]{3, rangeit.Range(5)}, []int{3, 4}},
 	}
-	for _, tt := range tt {
-		t.Run(tt.name, func(t *testing.T) {
-			got := sliceit.To(itlib.Drop(tt.args.n, tt.args.it))
-			assertpkg.Equalf(t, tt.want, got, "Drop(%v, ...)", tt.args.n)
+	for _, tc := range tt {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			got := sliceit.To(itlib.Drop(tc.args.n, tc.args.it))
+			assertpkg.Equalf(t, tc.want, got, "Drop(%v, ...)", tc.args.n)
 		})
 	}
 }
@@ -208,12 +209,13 @@ func TestAny(t *testing.T) {
 		{"false", []bool{false, false, false}, false},
 		{"true", []bool{false, false, true}, true},
 	}
-	for _, tt := range tt {
-		t.Run(tt.name, func(t *testing.T) {
-			got := itlib.Any(sliceit.In(tt.args), func(item bool) bool {
+	for _, tc := range tt {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			got := itlib.Any(sliceit.In(tc.args), func(item bool) bool {
 				return item
 			})
-			assertpkg.Equal(t, tt.wantOk, got)
+			assertpkg.Equal(t, tc.wantOk, got)
 		})
 	}
 }
@@ -229,12 +231,13 @@ func TestAll(t *testing.T) {
 		{"false2", []bool{false, false, true}, false},
 		{"true", []bool{true, true, true}, true},
 	}
-	for _, tt := range tt {
-		t.Run(tt.name, func(t *testing.T) {
-			got := itlib.All(sliceit.In(tt.args), func(item bool) bool {
+	for _, tc := range tt {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			got := itlib.All(sliceit.In(tc.args), func(item bool) bool {
 				return item
 			})
-			assertpkg.Equal(t, tt.wantOk, got)
+			assertpkg.Equal(t, tc.wantOk, got)
 		})
 	}
 }
