@@ -71,7 +71,7 @@ func TestChunk(t *testing.T) {
 				"A", "B", "C", "D", "E", "F", "G",
 			},
 			tx: func(el itkit.Iterator[string]) itkit.Iterator[string] {
-				return itlib.Limit(el, 2)
+				return itlib.Limit(2, el)
 			},
 			exp: [][]string{
 				{"A", "B"},

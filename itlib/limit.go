@@ -47,6 +47,6 @@ func newLimitIterator[T any](n uint, src itkit.Iterator[T]) *LimitIterator[T] {
 }
 
 // Limit returns a new [LimitIterator] instance.
-func Limit[T any](src itkit.Iterator[T], n uint) itkit.Iterator[T] {
+func Limit[T any](n uint, src itkit.Iterator[T]) itkit.Iterator[T] {
 	return newLimitIterator(n, src)
 }

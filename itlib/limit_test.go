@@ -25,7 +25,7 @@ import (
 
 func TestLimit(t *testing.T) {
 	t.Run("empty", func(t *testing.T) {
-		it := itlib.Limit(itlib.Empty[any](), 10)
+		it := itlib.Limit(10, itlib.Empty[any]())
 		assert.False(t, it.Next())
 	})
 
@@ -34,7 +34,7 @@ func TestLimit(t *testing.T) {
 
 		src := rangeit.Range(10)
 
-		it := itlib.Limit(src, 4)
+		it := itlib.Limit(4, src)
 
 		asserter.Equal([]int{0, 1, 2, 3}, sliceit.To(it))
 
@@ -49,7 +49,7 @@ func TestLimit(t *testing.T) {
 
 		src := rangeit.Range(4)
 
-		it := itlib.Limit(src, 10)
+		it := itlib.Limit(10, src)
 
 		asserter.Equal([]int{0, 1, 2, 3}, sliceit.To(it))
 

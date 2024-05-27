@@ -150,7 +150,7 @@ func TestTee(t *testing.T) {
 		it := funcit.PullFn(func() (*int, bool) {
 			return c.new(), true
 		})
-		it = itlib.Limit(it, 10)
+		it = itlib.Limit(10, it)
 
 		l, r := itlib.Tee(it)
 
@@ -161,7 +161,7 @@ func TestTee(t *testing.T) {
 		asserter.Equal(c.n, uint32(10))
 
 		// Consume half on the right side.
-		s := sliceit.To(itlib.Limit(r.Iter(), 5))
+		s := sliceit.To(itlib.Limit(5, r.Iter()))
 		asserter.Len(s, 5)
 
 		// Force garbage collection to clean up references.
