@@ -23,7 +23,8 @@ type windowSubIterator[T any] struct{ parent *WindowIterator[T] }
 func (it windowSubIterator[T]) Next() bool { return it.parent.windowNext() }
 func (it windowSubIterator[T]) Value() T   { return it.parent.windowValue() }
 
-// WindowIterator
+// WindowIterator is an iterator providing a sliding window over the
+// given source iterator as a sub-iterator.
 type WindowIterator[T any] struct {
 	// Size specifies the window size.
 	Size uint
