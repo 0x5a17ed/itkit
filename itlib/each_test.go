@@ -122,13 +122,13 @@ func TestEachIndex(t *testing.T) {
 }
 
 func TestReduce(t *testing.T) {
-	var n int
-
-	n = itlib.ReduceWithInitial(5, sliceit.In([]int{1, 2, 3, 4, 5}), func(a, b int) int { return a * b })
-	assertpkg.Equal(t, 600, n)
-
-	n = itlib.Reduce(sliceit.In([]int{1, 2, 3, 4, 5}), func(a, b int) int { return a*2 + b })
+	n := itlib.Reduce(sliceit.In([]int{1, 2, 3, 4, 5}), func(a, b int) int { return a*2 + b })
 	assertpkg.Equal(t, 57, n)
+}
+
+func TestFold(t *testing.T) {
+	n := itlib.Fold(5, sliceit.In([]int{1, 2, 3, 4, 5}), func(a, b int) int { return a * b })
+	assertpkg.Equal(t, 600, n)
 }
 
 func TestSum(t *testing.T) {

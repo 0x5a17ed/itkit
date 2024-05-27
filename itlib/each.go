@@ -83,11 +83,11 @@ func EachN[T any](it itkit.Iterator[T], fn EachNFn[T]) {
 
 type AccumulatorFn[T, R any] func(R, T) R
 
-// ReduceWithInitial reduces the given Iterator to a value which is the
+// Fold reduces the given Iterator to a value which is the
 // accumulated result of running each value through AccumulatorFn,
 // where each successive invocation of AccumulatorFn is supplied
 // the return value of the previous invocation.
-func ReduceWithInitial[T, R any](initial R, it itkit.Iterator[T], fn AccumulatorFn[T, R]) (out R) {
+func Fold[T, R any](initial R, it itkit.Iterator[T], fn AccumulatorFn[T, R]) (out R) {
 	out = initial
 	Apply(it, func(el T) { out = fn(out, it.Value()) })
 	return
@@ -97,14 +97,16 @@ func ReduceWithInitial[T, R any](initial R, it itkit.Iterator[T], fn Accumulator
 // accumulated result of running each value through AccumulatorFn,
 // where each successive invocation of AccumulatorFn is supplied
 // the return value of the previous invocation.
+//
+// See [Fold] for a variant of this function that accepts an initial value.
 func Reduce[T, R any](it itkit.Iterator[T], fn AccumulatorFn[T, R]) (out R) {
 	var zero R
-	return ReduceWithInitial(zero, it, fn)
+	return Fold(zero, it, fn)
 }
 
 // SumWithInitial accumulates the Iterator values based on the summation of their values.
 func SumWithInitial[T constraints.Ordered](initial T, it itkit.Iterator[T]) T {
-	return ReduceWithInitial[T, T](initial, it, func(a, b T) T { return a + b })
+	return Fold[T, T](initial, it, func(a, b T) T { return a + b })
 }
 
 // Sum accumulates the Iterator values based on the summation of their values.
