@@ -117,10 +117,7 @@ func Sum[T constraints.Ordered](it itkit.Iterator[T]) T {
 
 // Drop drops n items from the iterator.
 func Drop[T any](n uint, it itkit.Iterator[T]) itkit.Iterator[T] {
-	for i := uint(0); i < n; i++ {
-		if !it.Next() {
-			break
-		}
+	for i := uint(0); i < n && it.Next(); i++ {
 	}
 	return it
 }

@@ -17,6 +17,7 @@ package itlib_test
 import (
 	"testing"
 
+	"github.com/0x5a17ed/itkit"
 	assertpkg "github.com/stretchr/testify/assert"
 
 	"github.com/0x5a17ed/itkit/iters/rangeit"
@@ -174,35 +175,27 @@ func TestSum(t *testing.T) {
 }
 
 func TestDrop(t *testing.T) {
-	t.Run("empty", func(t *testing.T) {
-		it := itlib.Empty[any]()
-
-		it2 := itlib.Drop(4, it)
-		assertpkg.Same(t, it, it2)
-	})
-
-	t.Run("exactly", func(t *testing.T) {
-		assert := assertpkg.New(t)
-
-		it := rangeit.Range(5)
-
-		it2 := itlib.Drop(5, it)
-		assert.Same(it, it2)
-
-		assert.False(it.Next())
-	})
-
-	t.Run("less", func(t *testing.T) {
-		assert := assertpkg.New(t)
-
-		it := rangeit.Range(5)
-
-		it2 := itlib.Drop(4, it)
-		assert.Same(it, it2)
-
-		assert.True(it.Next())
-		assert.Equal(it.Value(), 4)
-	})
+	type args[T any] struct {
+		n  uint
+		it itkit.Iterator[T]
+	}
+	type testCase[T any] struct {
+		name string
+		args args[T]
+		want []T
+	}
+	tt := []testCase[int]{
+		{"empty", args[int]{4, itlib.Empty[int]()}, nil},
+		{"none", args[int]{0, rangeit.Range(5)}, []int{0, 1, 2, 3, 4}},
+		{"all", args[int]{5, rangeit.Range(5)}, nil},
+		{"less", args[int]{3, rangeit.Range(5)}, []int{3, 4}},
+	}
+	for _, tt := range tt {
+		t.Run(tt.name, func(t *testing.T) {
+			got := sliceit.To(itlib.Drop(tt.args.n, tt.args.it))
+			assertpkg.Equalf(t, tt.want, got, "Drop(%v, ...)", tt.args.n)
+		})
+	}
 }
 
 func TestAny(t *testing.T) {
