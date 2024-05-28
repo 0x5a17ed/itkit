@@ -34,7 +34,7 @@ func (it EmptyIterator[T]) Value() (v T) {
 	return
 }
 
-// Empty returns an Iterator that is always exhausted.
+// Empty returns a new [EmptyIterator] value.
 func Empty[T any]() itkit.Iterator[T] {
 	return &EmptyIterator[T]{}
 }
