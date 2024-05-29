@@ -31,6 +31,7 @@ type ChainIterator[T any] struct {
 // Ensure ChainIterator conforms to the Iterator protocol.
 var _ itkit.Iterator[struct{}] = &ChainIterator[struct{}]{}
 
+// Next implements the [itkit.Iterator.Next] interface.
 func (c *ChainIterator[T]) Next() bool {
 	if c.current != nil && c.current.Next() {
 		return true
@@ -44,6 +45,7 @@ func (c *ChainIterator[T]) Next() bool {
 	return false
 }
 
+// Value implements the [itkit.Iterator.Value] interface.
 func (c *ChainIterator[T]) Value() T {
 	return c.current.Value()
 }

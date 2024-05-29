@@ -26,6 +26,7 @@ type FilterIter[T any] struct {
 	cur T
 }
 
+// Next implements the [itkit.Iterator.Next] interface.
 func (f *FilterIter[T]) Next() bool {
 	var next T
 	for f.it.Next() {
@@ -37,6 +38,7 @@ func (f *FilterIter[T]) Next() bool {
 	return false
 }
 
+// Value implements the [itkit.Iterator.Value] interface.
 func (f *FilterIter[T]) Value() T { return f.cur }
 
 // Filter returns an Iterator yielding items from the given iterator
