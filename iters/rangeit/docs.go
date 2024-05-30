@@ -17,4 +17,5 @@
 // Iterator functions:
 //   - [Range], [RangeFrom], [RangeStep] - yields numbers in a finite range
 //   - [Count], [CountFrom], [CountStep] - yields continuously increasing numbers
+//   - [Enumerate], [EnumerateFrom], [EnumerateStep] - yields items with their index
 package rangeit
